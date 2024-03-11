@@ -1,22 +1,15 @@
-import Buscador from "./ui/home/Buscador";
-import { Risque as letra } from "next/font/google";
-const albertSans = letra({
-  weight: "400",
-  style: "normal",
-  subsets: ["latin"],
-});
-
+"use client";
+import HomePrincipal from "./pages/home/page";
+import { useEffect } from "react";
 export default function Home() {
+  useEffect(() => {
+    fetch("/api/search")
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  });
   return (
     <div className="wrapper-home">
-      <div className="container-home flex flex-col">
-        <h1
-          className={`${albertSans.className} text-center py-6 text-5xl tracking-wide text-white`}
-        >
-          Rapidin
-        </h1>
-        <Buscador />
-      </div>
+      <HomePrincipal />
     </div>
   );
 }

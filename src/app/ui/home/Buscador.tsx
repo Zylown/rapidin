@@ -8,11 +8,14 @@ export default function Buscador() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      console.log(dataSearch);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   console.log(dataSearch);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    // fetch("http://localhost:3000/api/search").then((res) => {
+    //   console.log(res);
+    // });
   };
 
   const handleInputSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +29,7 @@ export default function Buscador() {
         onSubmit={handleSubmit}
         className="container-buscador flex justify-center"
       >
-        <div className="relative md:w-96 w-full flex mx-2 items-center">
+        <div className="relative sm:w-[543px] w-full flex items-center">
           <Input placeholder="Inca Kola" onChange={handleInputSearch} />
           <button type="submit" className="absolute right-2">
             <FiSearch className="text-2xl text-white hover:text-black transition-all" />
