@@ -86,35 +86,48 @@ export async function handleDynamicPage() {
   await browser.close();
 }
 
-export async function scrapingPlazaVea() {
+export async function scrapingPlazaVea(search: string) {
+  // espera un valor de tipo string que es el valor que se va a buscar
   try {
     const browser = await puppeteer.launch({
-      headless: true, // cuando es true no se abre el navegador
+      headless: false, // cuando es true no se abre el navegador
       slowMo: 250,
     });
     const page = await browser.newPage();
 
-    await page.goto("https://www.plazavea.com.pe/search/?_query=inca%20kola", {
+    // await page.goto("https://www.plazavea.com.pe/search/?_query=inca%20kola", {
+    //   timeout: 0,
+    // });
+    await page.goto(`https://www.plazavea.com.pe/search/?_query=${search}`, {
       timeout: 0,
     });
     await page.waitForSelector(".Showcase__details__text");
+
     const result = await page.evaluate(() => {
       const text = document.querySelectorAll(".Showcase__details__text");
       console.log("texto", text);
       const data = [...text].map((quote) => {
         const name = quote.querySelector(".Showcase__name")?.textContent; // or use innerText
-        const price = quote.querySelector(".price")?.textContent;
+        const priceRegular = quote.querySelector(".price")?.textContent;
+        const priceOnline = quote.querySelector("[data-price]")?.textContent;
+        const urlVenta =
+          quote.querySelector("a.Showcase__name").attributes[1].value;
+        const tienda = quote.querySelector(
+          ".Showcase__SellerName"
+        )?.textContent;
         return {
           name,
-          price,
+          priceRegular,
+          priceOnline,
+          urlVenta,
+          tienda,
         };
       });
       return data;
     });
-    console.log(result);
     // await fs.writeFile("quotesPlazaVea.json", JSON.stringify(result, null, 2));
     await browser.close();
-    return result;
+    return { result, search };
   } catch (error: any) {
     console.log("error", error.message);
   }
