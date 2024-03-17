@@ -43,6 +43,7 @@ export async function scrapingPlazaVea(search: string) {
     return { result, search };
   } catch (error: any) {
     console.log("error", error.message);
+    return { result: [], search }; // si hay un error retorna un array vacio
   }
 }
 
@@ -76,10 +77,10 @@ export async function scrapingMetro(search: string) {
           ".vtex-product-summary-2-x-imageNormal.vtex-product-summary-2-x-image"
         );
 
-        const images = imagesElement
+        const imagen = imagesElement
           ? imagesElement.getAttribute("src") ||
             imagesElement.getAttribute("srcset")
-          : "No hay imagen";
+          : "https://www.colombianosune.com/sites/default/files/asociaciones/NO_disponible-43_18.jpg";
 
         const name = container.querySelector(
           ".vtex-product-summary-2-x-productBrand"
@@ -89,11 +90,11 @@ export async function scrapingMetro(search: string) {
           'div[id^="price-container-"]'
         );
 
-        const dataPricesO = priceRegularElement.querySelector(
+        const priceOnline = priceRegularElement.querySelector(
           "span.vtex-product-price-1-x-currencyContainer"
         )?.textContent;
 
-        const dataPricesR =
+        const priceRegular =
           priceRegularElement.querySelector(
             ".metroio-store-theme-13-x-span-ref-value"
           )?.textContent || "No hay precio regular";
@@ -106,10 +107,10 @@ export async function scrapingMetro(search: string) {
         const tienda = "METRO";
 
         return {
-          images,
+          imagen,
           name,
-          dataPricesO,
-          dataPricesR,
+          priceRegular,
+          priceOnline,
           urlVenta,
           tienda,
         };
@@ -121,6 +122,7 @@ export async function scrapingMetro(search: string) {
     return { result, search };
   } catch (error: any) {
     console.log("error", error.message);
+    return { result: [], search };
   }
 }
 
@@ -147,10 +149,14 @@ export async function scrapingTottus(search: string) {
       const containers = document.querySelectorAll(".jsx-1484439449");
 
       const data = [...containers].map((container) => {
-        const elementImg = container.querySelector(".jsx-1996933093 img");
+        const elementImg =
+          container.querySelector(".jsx-1996933093 img") ||
+          container.querySelector(
+            ".jsx-2469003054.layout_grid-view.layout_view_4_GRID>img"
+          );
         const imagen = elementImg
-          ? elementImg.getAttribute("srcset") || elementImg.getAttribute("src")
-          : "No hay imagen";
+          ? elementImg.getAttribute("src") || elementImg.getAttribute("srcset")
+          : "https://www.colombianosune.com/sites/default/files/asociaciones/NO_disponible-43_18.jpg";
 
         const nameElement = container.querySelector(
           "b[id^='testId-pod-displaySubTitle-']"
@@ -158,9 +164,10 @@ export async function scrapingTottus(search: string) {
 
         const name = nameElement?.textContent;
 
-        const dataPricesR = container.querySelector("li.prices-1")?.textContent;
+        const priceRegular =
+          container.querySelector("li.prices-1")?.textContent;
 
-        const dataPricesO = container.querySelector(
+        const priceOnline = container.querySelector(
           "li.prices-0 .jsx-280445118"
         )?.textContent;
 
@@ -169,15 +176,15 @@ export async function scrapingTottus(search: string) {
           container.querySelector("[data-gsccategory]");
         const urlVenta = elementVenta
           ? elementVenta.getAttribute("href")
-          : null;
+          : "https://www.colombianosune.com/sites/default/files/asociaciones/NO_disponible-43_18.jpg";
 
         const tienda = "TOTTUS";
 
         return {
           imagen,
           name,
-          dataPricesO,
-          dataPricesR,
+          priceOnline,
+          priceRegular,
           urlVenta,
           tienda,
         };
@@ -189,5 +196,84 @@ export async function scrapingTottus(search: string) {
     return { result, search };
   } catch (error: any) {
     console.log("error", error.message);
+    return { result: [], search };
+  }
+}
+
+export async function scrapingTambo(search: string) {
+  try {
+    const browser = await puppeteer.launch({
+      headless: "shell", // cuando es true no se abre el navegador
+      slowMo: 0,
+    });
+    const page = await browser.newPage();
+
+    await page.setViewport({
+      width: 1920,
+      height: 10580,
+      deviceScaleFactor: 1,
+    });
+
+    await page.goto(`https://www.tambo.pe/pedir?q=${search}`, {
+      timeout: 0,
+    });
+
+    await page.waitForSelector("._1kZCFobRwQ2tl6XA-sf6Ig.row>div");
+
+    const result = await page.evaluate(() => {
+      const containers = document.querySelectorAll(
+        "._1kZCFobRwQ2tl6XA-sf6Ig.row>div"
+      );
+
+      const data = [...containers].map((container) => {
+        const elementVenta = container.querySelector(
+          "._2YFsL04WhRxFGT_7VA6bKP"
+        );
+
+        const urlVenta = elementVenta
+          ? elementVenta.getAttribute("href")
+          : "https://www.colombianosune.com/sites/default/files/asociaciones/NO_disponible-43_18.jpg";
+
+        const elementImg = container.querySelector(
+          "._3yULoLW9gpjndljUfLfWLN.NmGramNcnIM1VmiTq5UPX>span>img"
+        );
+
+        const imagen = elementImg
+          ? elementImg.getAttribute("src")
+          : "https://www.colombianosune.com/sites/default/files/asociaciones/NO_disponible-43_18.jpg";
+
+        // const nameElement = container.querySelector("._2Wn_Ubr02VMh4x3GDzmf1V>span").textContent
+
+        const name = container.querySelector(
+          "._2Wn_Ubr02VMh4x3GDzmf1V>span"
+        )?.textContent;
+
+        const priceRegular = container.querySelector(
+          "._2TqV8qNT9cykzAlTiYQzpR"
+        )?.textContent;
+
+        const priceOnline = container.querySelector(
+          "._3cwJgygKLOPOt2029qoP1N.productPrice"
+        )?.textContent;
+
+        const tienda = "TAMBO";
+
+        return {
+          imagen,
+          name,
+          priceOnline,
+          priceRegular,
+          urlVenta,
+          tienda,
+        };
+      });
+
+      return data;
+    });
+    await browser.close();
+    return { result, search };
+  } catch (error: any) {
+    console.log("error", error.message);
+    return { result: [], search };
   }
 }

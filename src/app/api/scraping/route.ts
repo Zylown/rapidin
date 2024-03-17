@@ -2,16 +2,18 @@ import {
   scrapingPlazaVea,
   scrapingMetro,
   scrapingTottus,
+  scrapingTambo,
 } from "../actions/scrap";
+
+function getResult(result: any) {
+  return result.status === "fulfilled" ? result.value.result : null;
+}
 
 export async function GET(req: Request) {
   const startTime = performance.now();
   const queryParams = new URLSearchParams(req.url.split("?")[1]);
-  // aca se obtiene el query string de la url y se le pasa a URLSearchParams para que lo convierta en un objeto que se
-  // pueda manipular
   console.log("queryParams:", queryParams);
-  const search = queryParams.get("search"); // search es el nombre del parametro que se le pasa en la url osea que dentro de
-  // queryParams se busca el valor que tenga el parametro search
+  const search = queryParams.get("search");
   console.log("search:", search);
 
   if (!search) {
@@ -24,27 +26,31 @@ export async function GET(req: Request) {
   }
 
   try {
-    const [resultPlazaVea, resultMetro, resultTottus] =
+    const [resultPlazaVea, resultMetro, resultTottus, resultTambo] =
       await Promise.allSettled([
         scrapingPlazaVea(search),
         scrapingMetro(search),
         scrapingTottus(search),
-      ]); // aca se hace el llamado a las funciones que se van a ejecutar
+        scrapingTambo(search),
+      ]);
+
+    const successfulResults = [
+      getResult(resultPlazaVea),
+      getResult(resultMetro),
+      getResult(resultTottus),
+      getResult(resultTambo),
+    ];
 
     const resultJSON = JSON.stringify({
-      resultPlazaVea:
-        resultPlazaVea.status === "fulfilled"
-          ? resultPlazaVea.value.result
-          : null,
-      resultMetro:
-        resultMetro.status === "fulfilled" ? resultMetro.value.result : null,
-      resultTottus:
-        resultTottus.status === "fulfilled" ? resultTottus.value.result : null,
+      resultPlazaVea: successfulResults[0],
+      resultMetro: successfulResults[1],
+      resultTottus: successfulResults[2],
+      resultTambo: successfulResults[3],
       resultSearch: search.toUpperCase(),
     });
 
-    const endTime = performance.now(); // Obtener el tiempo de finalización de la ejecución
-    const executionTimeInSeconds = (endTime - startTime) / 1000; // Calcular el tiempo de ejecución en segundos
+    const endTime = performance.now();
+    const executionTimeInSeconds = (endTime - startTime) / 1000;
 
     console.log(
       `Execution time: ${executionTimeInSeconds.toPrecision(5)} seconds`

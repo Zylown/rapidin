@@ -1,20 +1,17 @@
-"use client"; // o también poner import React from "react"; en lugar de "use client"
 import Input from "@/app/components/Input";
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
-export default function Buscador() {
+interface BuscadorProps {
+  onSearch: (searchTerm: string) => void;
+}
+
+export default function Buscador({ onSearch }: BuscadorProps) {
   const [dataSearch, setDataSearch] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const res = await fetch(`/api/scraping?search=${dataSearch}`);
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
+    onSearch(dataSearch);
   };
 
   const handleInputSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +26,10 @@ export default function Buscador() {
         className="container-buscador flex justify-center"
       >
         <div className="relative sm:w-[543px] w-full flex items-center">
-          <Input placeholder="Inca Kola" onChange={handleInputSearch} />
+          <Input
+            placeholder="Ingrese algún producto"
+            onChange={handleInputSearch}
+          />
           <button type="submit" className="absolute right-2">
             <FiSearch className="text-2xl text-white hover:text-black transition-all" />
           </button>
