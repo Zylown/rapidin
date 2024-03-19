@@ -4,19 +4,18 @@ import noImage from "../assets/loading-spinner-svgrepo-com.svg";
 
 export default function Skeleton() {
   return (
-    <div className="wrapper-products my-6 sm:px-5 px-1 sm:max-w-full max-w-[50%]">
-      <div className="container-products flex sm:h-[450px] h-[300px] bg-slate-200 sm:p-4 p-2 rounded-xl sm:gap-12 gap-4 flex-col items-center sm:w-[230px]">
-        <div
-          className="loading-spinner rounded-xl overflow-hidden aspect-square min-w-20 sm:w-48 w-2/3 flex
-        justify-center"
-        >
-          <Image
-            src={noImage}
-            alt="no imagen"
-            width={50} // Establece el ancho deseado
-            height={50} // Establece la altura deseada
-            priority
-          />
+    <div className="wrapper-products my-6 sm:px-5 px-1 sm:w-auto w-1/2">
+      <div className="container-products flex sm:h-[450px] h-[300px] bg-slate-200 sm:p-4 p-2 rounded-xl sm:gap-12 gap-4 flex-col items-center sm:w-[230px] w-full">
+        <div className="loading-spinner rounded-xl overflow-hidden aspect-square min-w-16 sm:w-48 flex justify-center">
+          <div className="flex justify-center overflow-hidden w-10">
+            <Image
+              src={noImage}
+              alt="no imagen"
+              width={50} // Establece el ancho deseadoz
+              height={50} // Establece la altura deseada
+              priority
+            />
+          </div>
         </div>
         <div className="products__description sm:max-w-52 flex flex-col justify-between w-full">
           <div className="flex flex-col justify-between">

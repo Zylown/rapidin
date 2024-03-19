@@ -35,7 +35,7 @@ export default function ResultProducts({
             </p>
           </div>
           <hr className="w-full h-0.5 bg-gray-600 opacity-20 rounded my-2"></hr>
-          <div className="flex flex-col gap-1">
+          <div className="description__bottom flex flex-col gap-1">
             <p className="text-xs flex justify-between">
               Precio Regular{" "}
               <span className="line-through opacity-40">{priceRegular}</span>

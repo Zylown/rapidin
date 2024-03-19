@@ -14,12 +14,29 @@ export default function HomePrincipal() {
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [skeletonCount, setSkeletonCount] = useState(0);
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+    if (loading && searchTerm) {
+      // Inicia un intervalo para incrementar skeletonCount cada 3 segundos
+      intervalId = setInterval(() => {
+        setSkeletonCount((count) => count + 1);
+      }, 3000);
+    } else {
+      clearInterval(intervalId); // Limpia el intervalo una vez que los productos se han cargado
+      setSkeletonCount(0); // Resetea el contador de Skeletons
+    }
+    return () => clearInterval(intervalId); // Limpia el intervalo cuando el componente se desmonta
+  }, [loading, searchTerm]);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      // setProducts([]); // Limpia el estado de productos
+
       if (searchTerm) {
         const response = await fetch(`/api/scraping?search=${searchTerm}`);
+        setLoading(true);
         const data = await response.json();
         // Combina los productos de ambas tiendas en una sola lista
         const allProducts = [
@@ -29,15 +46,12 @@ export default function HomePrincipal() {
           ...data.resultTambo,
         ];
         setProducts(allProducts); // Almacena los productos combinados en el estado
+        setLoading(false);
       }
       setLoading(false);
     };
     fetchData();
   }, [searchTerm]);
-
-  const handleSearch = (term) => {
-    setSearchTerm(term);
-  };
 
   return (
     <div className="container-home flex flex-col">
@@ -47,11 +61,24 @@ export default function HomePrincipal() {
         Rapidin
       </h1>
       <div className="wrapper__search--result flex flex-col items-center mx-3">
-        <Buscador onSearch={handleSearch} />
+        <Buscador
+          onSearch={setSearchTerm}
+          loading={loading}
+          setLoading={setLoading}
+        />
         <div className="container__products--map w-full flex flex-wrap sm:justify-normal justify-between">
-          <div className="flex flex-wrap justify-center">
-            {loading && <Skeleton />} {/* Mostrar Skeleton mientras se carga */}
-            {!loading && // !loading es igual a loading === false entonces cuando loading sea false se mostrará el contenido de skeleton 
+          <div className="flex flex-wrap justify-center w-full">
+            {loading &&
+              Array.from(
+                { length: skeletonCount },
+                (
+                  _,
+                  i // Crea un número de Skeletons igual a skeletonCount
+                ) => (
+                  <Skeleton key={i} /> // array.from sirve para crear un array de un tamaño determinado y luego se mapea para crear los skeletons
+                )
+              )}
+            {!loading && // !loading es igual al contrario del valor que tiene entonces si loading es false se muestra el contenido y si es true muestra el skeleton
               products.map((producto, index) => (
                 <ResultProducts
                   key={index}
