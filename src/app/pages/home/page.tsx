@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import Buscador from "@/app/ui/home/Buscador";
 import ResultProducts from "@/app/ui/home/ResultProducts";
