@@ -6,4 +6,5 @@ export interface ProductsTypes {
   urlVenta: string;
   tienda: string;
   resultSearch: string;
+  index: number;
 }

@@ -97,7 +97,7 @@ export async function scrapingMetro(search: string) {
         const priceRegular =
           priceRegularElement.querySelector(
             ".metroio-store-theme-13-x-span-ref-value"
-          )?.textContent || "No hay precio regular";
+          )?.textContent || "No disponible";
 
         const urlVenta_a = container.querySelector(
           "a.vtex-product-summary-2-x-clearLink"

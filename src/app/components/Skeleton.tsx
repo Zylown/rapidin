@@ -9,6 +9,7 @@ export default function Skeleton() {
         <div className="loading-spinner rounded-xl overflow-hidden aspect-square min-w-16 sm:w-48 flex justify-center">
           <div className="flex justify-center overflow-hidden w-10">
             <Image
+              loading="eager"
               src={noImage}
               alt="no imagen"
               width={50} // Establece el ancho deseadoz

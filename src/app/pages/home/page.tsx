@@ -17,7 +17,7 @@ export default function HomePrincipal() {
   const [skeletonCount, setSkeletonCount] = useState(0);
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
+    let intervalId: string | number | NodeJS.Timeout;
     if (loading && searchTerm) {
       // Inicia un intervalo para incrementar skeletonCount cada 3 segundos
       intervalId = setInterval(() => {
@@ -39,13 +39,26 @@ export default function HomePrincipal() {
         setLoading(true);
         const data = await response.json();
         // Combina los productos de ambas tiendas en una sola lista
-        const allProducts = [
+        let allProducts = [
           ...data.resultPlazaVea,
           ...data.resultMetro,
           ...data.resultTottus,
           ...data.resultTambo,
         ];
-        setProducts(allProducts); // Almacena los productos combinados en el estado
+
+        // Ordena los productos por precio de menor a mayor
+        allProducts.sort((a, b) => {
+          const priceA = parseFloat(a.priceOnline.replace(/[^0-9.-]+/g, "")); // Elimina los caracteres no numéricos del precio
+          const priceB = parseFloat(b.priceOnline.replace(/[^0-9.-]+/g, ""));
+          return priceA - priceB;
+        });
+
+        // Filtra los productos para que solo se muestren aquellos cuyo nombre contiene la palabra de búsqueda
+        allProducts = allProducts.filter((product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        setProducts(allProducts); // Almacena los productos ordenados y filtrados en el estado
         setLoading(false);
       }
       setLoading(false);
@@ -57,6 +70,7 @@ export default function HomePrincipal() {
     <div className="container-home flex flex-col">
       <h1
         className={`${albertSans.className} text-center py-6 text-5xl tracking-wide text-white`}
+        translate="no"
       >
         Rapidin
       </h1>
@@ -82,6 +96,7 @@ export default function HomePrincipal() {
               products.map((producto, index) => (
                 <ResultProducts
                   key={index}
+                  index={index}
                   imagen={producto.imagen}
                   nombre={producto.name}
                   priceRegular={producto.priceRegular}

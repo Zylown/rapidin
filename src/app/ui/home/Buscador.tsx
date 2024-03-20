@@ -27,7 +27,7 @@ export default function Buscador({
     onSearch(dataSearch);
     setLoading(true);
   };
-  console.log(loading, "loading");
+  // console.log(loading, "loading");
   const handleInputSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setDataSearch(value);
