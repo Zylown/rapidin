@@ -1,5 +1,6 @@
 import puppeteer from "puppeteer";
-
+// import chromium from "@sparticuz/chromium";
+// import puppeteer from "puppeteer-core";
 export async function scrapingPlazaVea(search: string) {
   // espera un valor de tipo string que es el valor que se va a buscar
   try {
@@ -10,10 +11,8 @@ export async function scrapingPlazaVea(search: string) {
         "single-process",
         "--no-zygote",
       ],
-      executablePath:
-        process.env.NODE_ENV === "production"
-          ? process.env.PUPPETEER_EXECUTABLE_PATH
-          : puppeteer.executablePath(),
+      // executablePath: await chromium.executablePath(),
+      ignoreHTTPSErrors: true,
       headless: "shell", // cuando es true no se abre el navegador
       slowMo: 0,
     });
