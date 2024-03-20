@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "install": "node node_modules/puppeteer/install.js",
+    "install": "node node_modules/puppeteer/install.mjs",
     "lint": "next lint"
   },
   "dependencies": {
