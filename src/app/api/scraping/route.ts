@@ -18,7 +18,7 @@ export async function GET(req: Request) {
 
   if (!search) {
     return new Response(
-      JSON.stringify({ message: "Missing search parameter" }),
+      JSON.stringify({ message: "Recibido, pero sin parámetros" }),
       {
         status: 400,
       }
