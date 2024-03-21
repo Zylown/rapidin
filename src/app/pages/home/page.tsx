@@ -42,9 +42,9 @@ export default function HomePrincipal() {
         // Combina los productos de ambas tiendas en una sola lista
         let allProducts = [
           ...data.resultPlazaVea,
-          ...data.resultMetro,
-          ...data.resultTottus,
-          ...data.resultTambo,
+          // ...data.resultMetro,
+          // ...data.resultTottus,
+          // ...data.resultTambo,
         ];
 
         // Ordena los productos por precio de menor a mayor

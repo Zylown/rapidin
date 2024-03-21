@@ -9,7 +9,7 @@ export async function scrapingPlazaVea(search: string) {
       // executablePath: await chromium.executablePath(),
       ignoreHTTPSErrors: true,
       defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath("/opt/chromium"),
+      // executablePath: await chromium.executablePath("/opt/chromium"),
       headless: chromium.headless,
       slowMo: 0,
     });
@@ -54,7 +54,7 @@ export async function scrapingPlazaVea(search: string) {
     return { result: [], search }; // si hay un error retorna un array vacio
   }
 }
-
+/*
 export async function scrapingMetro(search: string) {
   // espera un valor de tipo string que es el valor que se va a buscar
   try {
@@ -285,3 +285,4 @@ export async function scrapingTambo(search: string) {
     return { result: [], search };
   }
 }
+*/

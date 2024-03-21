@@ -1,8 +1,8 @@
 import {
   scrapingPlazaVea,
-  scrapingMetro,
-  scrapingTottus,
-  scrapingTambo,
+  // scrapingMetro,
+  // scrapingTottus,
+  // scrapingTambo,
 } from "../actions/scrap";
 
 function getResult(result: any) {
@@ -26,6 +26,7 @@ export async function GET(req: Request) {
   }
 
   try {
+    /*
     const [resultPlazaVea, resultMetro, resultTottus, resultTambo] =
       await Promise.allSettled([
         scrapingPlazaVea(search),
@@ -33,19 +34,31 @@ export async function GET(req: Request) {
         scrapingTottus(search),
         scrapingTambo(search),
       ]);
-
-    const successfulResults = [
+      
+      const successfulResults = [
       getResult(resultPlazaVea),
       getResult(resultMetro),
       getResult(resultTottus),
       getResult(resultTambo),
     ];
 
-    const resultJSON = JSON.stringify({
+      const resultJSON = JSON.stringify({
       resultPlazaVea: successfulResults[0],
       resultMetro: successfulResults[1],
       resultTottus: successfulResults[2],
       resultTambo: successfulResults[3],
+      resultSearch: search.toUpperCase(),
+    });
+      */
+
+    const [resultPlazaVea] = await Promise.allSettled([
+      scrapingPlazaVea(search),
+    ]);
+
+    const successfulResults = [getResult(resultPlazaVea)];
+
+    const resultJSON = JSON.stringify({
+      resultPlazaVea: successfulResults[0],
       resultSearch: search.toUpperCase(),
     });
 
