@@ -1,6 +1,6 @@
-// import puppeteer from "puppeteer";
+import puppeteer from "puppeteer";
 import chromium from "@sparticuz/chromium-min";
-import puppeteer from "puppeteer-core";
+// import puppeteer from "puppeteer-core";
 export async function scrapingPlazaVea(search: string) {
   // espera un valor de tipo string que es el valor que se va a buscar
   try {
