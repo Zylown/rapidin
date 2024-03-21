@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
+    remotePatterns: [
       "plazavea.vteximg.com.br",
       "metroio.vtexassets.com",
       "s7d2.scene7.com",
