@@ -16,6 +16,7 @@ export async function scrapingPlazaVea(search: string) {
       headless: "shell", // cuando es true no se abre el navegador
       slowMo: 0,
     });
+    console.log("path", puppeteer.executablePath());
     const page = await browser.newPage();
 
     await page.goto(`https://www.plazavea.com.pe/search/?_query=${search}`, {
