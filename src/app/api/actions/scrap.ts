@@ -1,22 +1,20 @@
-import puppeteer from "puppeteer";
-// import chromium from "@sparticuz/chromium";
-// import puppeteer from "puppeteer-core";
+// import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium-min";
+import puppeteer from "puppeteer-core";
 export async function scrapingPlazaVea(search: string) {
   // espera un valor de tipo string que es el valor que se va a buscar
   try {
     const browser = await puppeteer.launch({
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "single-process",
-        "--no-zygote",
-      ],
+      args: chromium.args,
       // executablePath: await chromium.executablePath(),
       ignoreHTTPSErrors: true,
-      headless: "shell", // cuando es true no se abre el navegador
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath("/opt/chromium"),
+      headless: chromium.headless,
       slowMo: 0,
     });
     console.log("path", puppeteer.executablePath());
+    console.log("Chromium:", await browser.version());
     const page = await browser.newPage();
 
     await page.goto(`https://www.plazavea.com.pe/search/?_query=${search}`, {
