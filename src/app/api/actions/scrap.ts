@@ -6,7 +6,6 @@ export async function scrapingPlazaVea(search: string) {
   try {
     const browser = await puppeteer.launch({
       args: chromium.args,
-      // executablePath: await chromium.executablePath(),
       ignoreHTTPSErrors: true,
       defaultViewport: chromium.defaultViewport,
       // executablePath: await chromium.executablePath("/opt/chromium"),
