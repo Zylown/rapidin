@@ -62,7 +62,6 @@ export default function HomePrincipal() {
         setProducts(allProducts); // Almacena los productos ordenados y filtrados en el estado
         setLoading(false);
       }
-      setLoading(false);
     };
     fetchData();
   }, [searchTerm]);
