@@ -33,6 +33,11 @@ const nextConfig = {
         hostname: "falabella.scene7.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "imagedelivery.net",
+        port: "",
+      },
     ],
   },
 };

@@ -49,8 +49,12 @@ export default function HomePrincipal() {
 
         // Ordena los productos por precio de menor a mayor
         allProducts.sort((a, b) => {
-          const priceA = parseFloat(a.priceOnline.replace(/[^0-9.-]+/g, "")); // Elimina los caracteres no numéricos del precio
-          const priceB = parseFloat(b.priceOnline.replace(/[^0-9.-]+/g, ""));
+          const priceA = a.priceOnline
+            ? parseFloat(a.priceOnline.replace(/[^0-9.-]+/g, ""))
+            : Infinity; // Elimina los caracteres no numéricos del precio
+          const priceB = b.priceOnline
+            ? parseFloat(b.priceOnline.replace(/[^0-9.-]+/g, ""))
+            : Infinity;
           return priceA - priceB;
         });
 
